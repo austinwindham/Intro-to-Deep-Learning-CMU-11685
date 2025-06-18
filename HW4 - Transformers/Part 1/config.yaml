@@ -1,0 +1,127 @@
+
+Name                      : "Enter-Name-Here"
+
+###### Tokenization ------------------------------------------------------------
+tokenization:
+  token_type                : "char"       # [char, 1k, 5k, 10k]
+  token_map :
+      'char': 'hw4lib/data/tokenizer_jsons/tokenizer_char.json'
+      '1k'  : 'hw4lib/data/tokenizer_jsons/tokenizer_1000.json'
+      '5k'  : 'hw4lib/data/tokenizer_jsons/tokenizer_5000.json'
+      '10k' : 'hw4lib/data/tokenizer_jsons/tokenizer_10000.json'
+
+###### Dataset -----------------------------------------------------------------
+data:                    # Currently setup for Colab assuming out setup
+  root                 : "hw4_data_subset/hw4p1_data"  # TODO: Set the root path of your data
+  train_partition      : "train"  # train
+  val_partition        : "val"    # val
+  test_partition       : "test"   # test
+  subset               : 1.0      # Load a subset of the data (for debugging, testing, etc
+  batch_size           : 32     #
+  NUM_WORKERS          : 2        # Set to 0 for CPU
+
+###### Network Specs -------------------------------------------------------------
+model: # Decoder-Only Language Model (HW4P1)
+  d_model                   : 256
+  d_ff                      : 1024
+  num_layers                : 2
+  num_heads                 : 2
+  dropout                   : 0.0
+  layer_drop_rate           : 0.0
+  weight_tying              : False
+
+###### Common Training Parameters ------------------------------------------------
+training:
+  use_wandb                   : False   # Toggle wandb logging
+  wandb_run_id                : "none" # "none" or "run_id"
+  resume                      : False  # Resume an existing run (run_id != 'none')
+  epochs                      : 20
+  gradient_accumulation_steps : 1
+  wandb_project               : "Set-Project-Name-Here" # wandb project to log to
+
+###### Loss ----------------------------------------------------------------------
+loss: # Just good ol' CrossEntropy
+  label_smoothing: 0.0
+
+###### Optimizer -----------------------------------------------------------------
+optimizer:
+  name: "adam" # Options: sgd, adam, adamw
+  lr: 5.0e-4   # Base learning rate
+
+  # Common parameters
+  weight_decay: 0.0001
+
+  # Parameter groups
+  param_groups:
+    - name: self_attn
+      patterns: []  # Will match all parameters containing keywords set their learning rate to 0.0001
+      lr: 0.0001    # LR for self_attn
+      layer_decay:
+        enabled: False
+        decay_rate: 0.8
+
+    - name: ffn
+      patterns: [] # Will match all parameters containing "ffn" and set their learning rate to 0.0001
+      lr: 0.0001   # LR for ffn
+      layer_decay:
+        enabled: False
+        decay_rate: 0.8
+
+  # Layer-wise learning rates
+  layer_decay:
+    enabled: False
+    decay_rate: 0.75
+
+  # SGD specific parameters
+  sgd:
+    momentum: 0.9
+    nesterov: True
+    dampening: 0
+
+  # Adam specific parameters
+  adam:
+    betas: [0.9, 0.999]
+    eps: 1.0e-8
+    amsgrad: False
+
+  # AdamW specific parameters
+  adamw:
+    betas: [0.9, 0.999]
+    eps: 1.0e-8
+    amsgrad: False
+
+###### Scheduler -----------------------------------------------------------------
+scheduler:
+  name: "cosine"  # Options: reduce_lr, cosine, cosine_warm
+
+  # ReduceLROnPlateau specific parameters
+  reduce_lr:
+    mode: "min"  # Options: min, max
+    factor: 0.1  # Factor to reduce learning rate by
+    patience: 10  # Number of epochs with no improvement after which LR will be reduced
+    threshold: 0.0001  # Threshold for measuring the new optimum
+    threshold_mode: "rel"  # Options: rel, abs
+    cooldown: 0  # Number of epochs to wait before resuming normal operation
+    min_lr: 0.0000001  # Minimum learning rate
+    eps: 1.0e-8  # Minimal decay applied to lr
+
+  # CosineAnnealingLR specific parameters
+  cosine:
+    T_max: 15  # Maximum number of iterations
+    eta_min: 1.0e-8  # Minimum learning rate
+    last_epoch: -1
+
+  # CosineAnnealingWarmRestarts specific parameters
+  cosine_warm:
+    T_0: 4  # Number of iterations for the first restart
+    T_mult: 4  # Factor increasing T_i after each restart
+    eta_min: 0.0000001  # Minimum learning rate
+    last_epoch: -1
+
+  # Warmup parameters (can be used with any scheduler)
+  warmup:
+    enabled: True
+    type: "exponential"  # Options: linear, exponential
+    epochs: 5
+    start_factor: 0.1
+    end_factor: 1.0

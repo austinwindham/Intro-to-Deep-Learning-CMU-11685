@@ -1,0 +1,113 @@
+{
+  "version": "1.0",
+  "truncation": null,
+  "padding": null,
+  "added_tokens": [
+    {
+      "id": 0,
+      "content": "[PAD]",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    },
+    {
+      "id": 1,
+      "content": "[UNK]",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    },
+    {
+      "id": 2,
+      "content": "[MASK]",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    },
+    {
+      "id": 3,
+      "content": "[SOS]",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    },
+    {
+      "id": 4,
+      "content": "[EOS]",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    },
+    {
+      "id": 5,
+      "content": "[BLANK]",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    }
+  ],
+  "normalizer": null,
+  "pre_tokenizer": {
+    "type": "Split",
+    "pattern": {
+      "String": ""
+    },
+    "behavior": "Isolated",
+    "invert": false
+  },
+  "post_processor": null,
+  "decoder": null,
+  "model": {
+    "type": "WordLevel",
+    "vocab": {
+      "[PAD]": 0,
+      "[UNK]": 1,
+      "[MASK]": 2,
+      "[SOS]": 3,
+      "[EOS]": 4,
+      "[BLANK]": 5,
+      " ": 6,
+      "E": 7,
+      "T": 8,
+      "A": 9,
+      "O": 10,
+      "N": 11,
+      "I": 12,
+      "H": 13,
+      "S": 14,
+      "R": 15,
+      "D": 16,
+      "L": 17,
+      "U": 18,
+      "M": 19,
+      "C": 20,
+      "W": 21,
+      "F": 22,
+      "G": 23,
+      "Y": 24,
+      "P": 25,
+      "B": 26,
+      "V": 27,
+      "K": 28,
+      "\n": 29,
+      "'": 30,
+      "X": 31,
+      "J": 32,
+      "Q": 33,
+      "Z": 34
+    },
+    "unk_token": "<unk>"
+  }
+}
