@@ -1,0 +1,32 @@
+# HW 3 Part 2 Submission Details
+In this homework, I created a recurrent neural network to perform utterance-to-phoneme mapping for speech recognition using sequence-to-sequence modeling. The different methods I used for creating the network are below. All of my code was done in the python notebook template file, so to run my code, you just need to run the code blocks in sequential order. 
+
+## Methods
+### Architecture
+I initially started with a simple CNN-based model and a basic decoder to meet the early submission deadline. However, I ran into issues with the decoder: a small typo that caused the model to fail during training. Once I fixed that bug, I moved on to building a more advanced model. This final version included a convolutional embedding module with three 1D CNN layers, followed by ReLU activations and batch normalization. After the CNN, I used a bidirectional LSTM layer to model the sequential nature of the audio data, followed by two pyramidal BiLSTM (pBLSTM) layers to downsample the temporal resolution while increasing feature dimensionality. For the decoder, I implemented a multi-layer MLP with linear layers, ReLU activations, dropout, and batch normalization. The final layer was a log-softmax over the 41 phoneme classes. I trained the model using PyTorch’s built-in CTC Loss.
+
+### Hyperparameters
+Initially, I experimented with a linear learning rate scheduler just to confirm that my model was training properly. Once I verified that everything was working, I switched to cosine annealing, as it had given me the best results in previous assignments.
+
+At first, I was only training for around 15 to 20 epochs, but after a suggestion from a friend, I extended training to nearly 100 epochs. This change led to a noticeable improvement in model performance, so I stuck with the longer training schedule.
+
+I also increased my dropout from 0.2 to 0.3, which helped reduce overfitting and gave a small but consistent improvement. I tried implementing locked dropout as well, but in my case, it didn’t improve results compared to standard dropout.
+
+Finally, I found that a slightly higher learning rate helped the model converge faster and more effectively in the early stages of training.
+
+### Data Handling
+For data augmenations, I just did some basic time and frequency augmenatations like in the first homework. 
+
+### Best Run
+Ultimately, my best run achieved a Levenshtein distance of around 6 after training for 100 epochs. This setup, with extended training, cosine annealing, increased dropout, and a higher learning rate, gave me the most reliable and consistent results.
+
+## Links
+### Weights & Biases (WandB) Project
+The link to my weights and biases for my expirments is here:
+[View my WandB project here](https://wandb.ai/awindham4-carnegie-mellon-university/hw3p2-ablations?nw=nwuserawindham4)
+
+### Other Files
+An excel sheet of some of our ablations for my team is included in this tar file along with my python notebook. I was not able to get as good of results as my teammates, so I did not contribute as much to the ablations this time. 
+
+
+
