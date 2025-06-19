@@ -1,0 +1,34 @@
+# HW 1 Part 2 Submission Details
+In this homework, i created a CNN to do face classifiction and then face verification. The different methods I used for creating the network are below. All of my code was done in the python notebook template file, so to run my code, you just need to run the code blocks in sequential order. 
+
+## Methods
+### Architecture
+I initially started with a simple CNN to meet the early cutoff requirements. Once that was achieved, I transitioned to a ResNet-based model, knowing it would be the most effective for this task. To stay within the 30 million parameter limit, I designed a ResNet architecture that was slightly below this threshold.
+
+This model significantly improved performance, and since it was already close to the parameter limit, I shifted my focus to hyperparameter tuning rather than modifying the architecture further. I aimed to optimize training settings to maximize performance while keeping the model complexity stable.
+
+### Hyperparameters
+Initially, I used AdamW as my optimizer but later switched to SGD, knowing that it is generally better suited for vision-related tasks. This change led to some noticeable improvements in performance.
+
+From there, I focused on learning rate tuning. I found that a higher learning rate (0.01) at the start helped the model learn much better, whereas smaller learning rates (0.001 or lower) struggled to make the model converge effectively.
+
+I then experimented with cosine annealing, which produced promising results. Building on that, I tried cosine annealing with restarts, which further improved performance.
+
+Some suggested that extending the number of epochs could help, so I experimented with that. However, I didn't see significant improvements from training for much longer. Ultimately, I settled on 30 epochs, which allowed me to hit the high cutoff while maintaining efficiency.
+
+### Data Handling
+For data augmenations, I did a horizontal fip, 10 degree rotation, color jitter and random size recrop. I have some experiencing with vision networks before, so I thought this would be fine. I tried the method to make small black squares in the images, but I could not get it to work properly. 
+
+### Best Run
+Ultimately, my best run was around a 2.5 EER. I used cosine annealing with restarts with a T_0 of 10 and T_mul of 2. I trained for 30 epochs with the ResNet architecture I talked about. My optimizer was SGD, and my learning rate was 0.01. 
+
+## Links
+### Weights & Biases (WandB) Project
+The link to my weights and biases for my expirments is here:
+[View my WandB project here](https://wandb.ai/awindham4-carnegie-mellon-university/hw2p2-ablations?nw=nwuserawindham4)
+
+### Other Files
+An excel sheet of some of our ablations for my team is included in this tar file along with my python notebook. 
+
+
+
